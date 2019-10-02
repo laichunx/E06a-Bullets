@@ -1,4 +1,8 @@
 # E06a-Bullets
+# Description:
+# In this assignment, we praticed how to generate sprites and destroy sprite. 
+# Also, we make condition before destroy a sprite such as when the enemy hp equal to 0.
+# Moreover, we praticed how to deal with collision of two sprites.
 Playing with bullet sprites:
 
 It's narwhals vs. penguins(?)! These natural enemies are locked in a battle; who will survive?

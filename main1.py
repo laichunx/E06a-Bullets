@@ -1,4 +1,4 @@
-import sys, logging, os, random, math, open_color, arcade
+import sys, logging, os, random, math, open_color, arcade, time
 
 #check to make sure we are running the right version of Python
 version = (3,7)
@@ -39,7 +39,6 @@ class Bullet(arcade.Sprite):
         '''
         self.center_x += self.dx
         self.center_y += self.dy
-
 
     
 class Player(arcade.Sprite):
@@ -83,17 +82,29 @@ class Window(arcade.Window):
             x = 120 * (i+1) + 40
             y = 500
             enemy = Enemy((x,y))
-            self.enemy_list.append(enemy)            
+            self.enemy_list.append(enemy)      
 
     def update(self, delta_time):
         self.bullet_list.update()
         for e in self.enemy_list:
+            for b in self.bullet_list:
+                if(arcade.check_for_collision(e,b)):
+                    self.score += HIT_SCORE
+                    e.hp -= BULLET_DAMAGE
+                    b.kill()
+                    if(e.hp <= 0):
+                        self.score += KILL_SCORE
+                        e.kill()
+
+        if(len(self.enemy_list)==0):
+            quit()
+            
+            
             # check for collision
             # for every bullet that hits, decrease the hp and then see if it dies
             # increase the score
             # e.kill() will remove the enemy sprite from the game
             # the pass statement is a placeholder. Remove line 81 when you add your code
-            pass
 
     def on_draw(self):
         arcade.start_render()
@@ -111,8 +122,9 @@ class Window(arcade.Window):
     def on_mouse_press(self, x, y, button, modifiers):
         if button == arcade.MOUSE_BUTTON_LEFT:
             #fire a bullet
-            #the pass statement is a placeholder. Remove line 97 when you add your code
-            pass
+            bullet = Bullet((self.player.center_x,self.player.center_y+15),(0,10),BULLET_DAMAGE)
+            self.bullet_list.append(bullet)
+
 
 def main():
     window = Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
